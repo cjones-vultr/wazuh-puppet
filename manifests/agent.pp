@@ -267,11 +267,15 @@ class wazuh::agent (
     }
   }
 
+  $version = "${agent_package_version}-${agent_package_revision}"
+  if $agent_package_version == "present" {
+    $version = "present"
+  }
   # Package installation
   case $::kernel {
     'Linux': {
       package { $agent_package_name:
-        ensure => "${agent_package_version}-${agent_package_revision}", # lint:ignore:security_package_pinned_version
+        ensure => $version, # lint:ignore:security_package_pinned_version
       }
     }
     'windows': {
